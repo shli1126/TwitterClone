@@ -1,0 +1,65 @@
+{% extends 'base.html' %} 
+{% block content %} 
+<link rel="icon" href="data:;base64,=" />
+
+<div class='row text-center'>
+    <div class='col'>
+        <h1> Welcome to Tweetme 2</h1>
+    </div>
+</div>
+
+
+
+<div id="tweets">Replace me</div>
+
+<script>
+  const tweetsElement = document.getElementById("tweets");
+  tweetsElement.innerHTML = "loading ....";
+
+  const xhr = new XMLHttpRequest();
+  const method = "GET";
+  const url = "/tweets";
+  const responseType = "json";
+
+  function handleDidLike(tweet_id, currentCount) {
+    console.log(tweet_id, currentCount);
+  }
+
+  function LikeBtn(tweet) {
+    return  ("<button class='btn btn-primary' onClick=handleDidLike(" +
+      tweet.id +
+      "," +
+      tweet.likes + ")>" +
+      tweet.likes +
+      " Like</button>")
+      
+  }
+  function formatTweetElement(tweet) {
+    var formattedTweet =
+      "<div class='mb-4' id='tweet-" +
+      tweet.id +
+      "'>" +
+      "<p>" +
+      tweet.content +
+      "</p>" +
+      "<div class='btn-group'>" +
+      LikeBtn(tweet) +
+      "</div></div>";
+    return formattedTweet;
+  }
+
+  xhr.responseType = responseType;
+  xhr.open(method, url);
+  xhr.onload = function () {
+    const serverResponse = xhr.response;
+    var listedItems = serverResponse.response;
+    var finalTweetStr = "";
+    var i;
+    for (i = 0; i < listedItems.length; i++) {
+      finalTweetStr += formatTweetElement(listedItems[i]);
+    }
+    tweetsElement.innerHTML = finalTweetStr;
+  };
+  xhr.send();
+</script>
+{% endblock content %}
