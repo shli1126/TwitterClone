@@ -12,6 +12,7 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
         "id": tweet_id,
         "content": ""
     }
+    
     status= 200
     try:
         obj = Tweet.objects.get(id=tweet_id)
